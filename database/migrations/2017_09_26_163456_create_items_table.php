@@ -14,8 +14,8 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->increments('id')->unique();
+            $table->foreign('posX')->references('posX')->on('Racks');
         });
     }
 

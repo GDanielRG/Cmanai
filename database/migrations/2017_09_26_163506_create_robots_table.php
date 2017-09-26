@@ -14,8 +14,11 @@ class CreateRobotsTable extends Migration
     public function up()
     {
         Schema::create('robots', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->increments('id')->unique();
+            $table->int('posX');
+            $table->int('posY');
+            $table->string('status');
+            $table->int('currentRack')->nullable();
         });
     }
 

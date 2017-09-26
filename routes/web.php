@@ -12,5 +12,6 @@
 */
 
 Route::get('/add-product', 'MainController@getAddProduct');
+Route::post('/add-product', 'MainController@postAddProduct');
 Route::get('/orders', 'MainController@getOrders');
 Route::get('/inventory', 'MainController@getInventory');
