@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/add-product', 'MainController@getAddProduct');
+Route::get('/orders', 'MainController@getOrders');
+Route::get('/inventory', 'MainController@getInventory');
