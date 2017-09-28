@@ -49,6 +49,13 @@ class MainController extends Controller
       return view('racks');
     }
 
+    public function getChangeRack(Item $item)
+    {
+      $items = Item::all();
+      $data['items'] = $items;
+      return view('/items', $data);
+    }
+
     public function postChangeRack(Item $item)
     {
       $item->save(new Rack(id));
