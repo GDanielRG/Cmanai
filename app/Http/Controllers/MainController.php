@@ -16,12 +16,12 @@ class MainController extends Controller
     {
         return view('product-add');
     }
-    
+
     public function getAddRack()
     {
         return view('rack-add');
     }
-    
+
     public function postAddRack(Request $request)
     {
       $this->validate($request, [
@@ -29,7 +29,7 @@ class MainController extends Controller
         'posX' => 'required|integer',
         'posY' => 'required|integer',
       ]);
-      
+
       $rack = Rack::create([
         "name" => $request->get('name'),
         "posX" => $request->get('posX'),
@@ -40,6 +40,22 @@ class MainController extends Controller
       return view('racks');
     }
 
+    public function postDeleteRack(Rack $rack)
+    {
+      if($rack->items->count()>0)
+        return back();
+
+      $rack->delete();
+      $rack->save();
+
+      return view('racks');
+    }
+
+    public function postChangeRack(Item $item)
+    {
+      $item->save(new Rack(id));
+    }
+
     public function postAddProduct(Request $request)
     {
       $this->validate($request, [
@@ -47,14 +63,14 @@ class MainController extends Controller
         'bar_code' => 'required',
         'quantity' => 'required|integer'
       ]);
-      
+
       $product = Product::create([
         "name" => $request->get('name'),
         "bar_code" => $request->get('bar_code'),
         "quantity" => $request->get('quantity'),
       ]);
 
-      for ($i=0; $i < $request->get('quantity'); $i++) { 
+      for ($i=0; $i < $request->get('quantity'); $i++) {
         $product->items()->save(new Item());
       }
 
