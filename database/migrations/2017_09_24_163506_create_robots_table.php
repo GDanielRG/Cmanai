@@ -14,11 +14,12 @@ class CreateRobotsTable extends Migration
     public function up()
     {
         Schema::create('robots', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->int('posX');
-            $table->int('posY');
-            $table->string('status');
-            $table->int('currentRack')->nullable();
+            $table->increments('id');
+            $table->integer('posX');
+            $table->integer('posY');
+
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

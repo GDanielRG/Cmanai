@@ -14,8 +14,12 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->string('barCode')->unique();
-            $table->string('productName');
+            $table->increments('id');
+            $table->string('bar_code')->unique();
+            $table->string('name');
+
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

@@ -14,18 +14,26 @@
             </div>
             </div>
             <div class="row">
-                <table class="table table-hover table-inverse">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Codigo de Barras</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+                <table class="table table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Codigo de Barras</th>
+                            <th>Cantidad</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($products as $product)    
+                            <tr>
+                                <td>{{$product->name}}</td>
+                                <td>{{$product->bar_code}}</td>
+                                <td>{{$product->items->count()}}</td>
+                                <td>(ver boton)</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
     </div>
 @endsection

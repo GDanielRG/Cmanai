@@ -15,3 +15,5 @@ Route::get('/add-product', 'MainController@getAddProduct');
 Route::post('/add-product', 'MainController@postAddProduct');
 Route::get('/orders', 'MainController@getOrders');
 Route::get('/inventory', 'MainController@getInventory');
+Route::get('/add-rack', 'MainController@getAddRack');
+Route::post('/add-rack', 'MainController@postAddRack');

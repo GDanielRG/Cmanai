@@ -14,8 +14,24 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->foreign('posX')->references('posX')->on('Racks');
+            $table->increments('id');
+            $table->integer('rack_id')->unsigned()->nullable();
+            $table->integer('product_id')->unsigned();
+
+            $table->foreign('product_id')
+            ->references('id')
+            ->on('products')
+            ->onDelete('cascade');
+            
+            $table->foreign('rack_id')
+            ->references('id')
+            ->on('racks')
+            ->onDelete('cascade');
+
+            $table->softDeletes();
+            $table->timestamps();
+
+            
         });
     }
 

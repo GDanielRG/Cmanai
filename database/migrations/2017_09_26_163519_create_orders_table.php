@@ -15,6 +15,16 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('robot_id')->unsigned();
+            $table->string('type');
+            $table->json('payload');
+            
+            $table->foreign('robot_id')
+            ->references('id')
+            ->on('robots')
+            ->onDelete('cascade');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }
