@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Rack;
 use App\Models\Product;
 use App\Models\Item;
+use App\Models\Robot;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
