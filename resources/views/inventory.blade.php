@@ -29,7 +29,7 @@
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->bar_code}}</td>
                                 <td>{{$product->items->count()}}</td>
-                                <td>(ver boton)</td>
+                                <td><a href="/products/{{$product->id}}"> <button class="btn btn-secondary" type="button">Ver <i class="fa fa-search" aria-hidden="true"></i></button></a></td>
                             </tr>
                         @endforeach
                     </tbody>

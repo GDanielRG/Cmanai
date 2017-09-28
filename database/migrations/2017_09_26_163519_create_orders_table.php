@@ -18,6 +18,7 @@ class CreateOrdersTable extends Migration
             $table->integer('robot_id')->unsigned();
             $table->string('type');
             $table->json('payload');
+            $table->boolean('completed')->default(false);
             
             $table->foreign('robot_id')
             ->references('id')
