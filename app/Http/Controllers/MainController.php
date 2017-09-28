@@ -17,7 +17,7 @@ class MainController extends Controller
 
     public function getAddRack()
     {
-        return view('rack-add');
+        return view('racks');
     }
 
     public function postAddRack(Request $request)
