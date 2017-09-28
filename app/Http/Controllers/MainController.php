@@ -92,7 +92,9 @@ class MainController extends Controller
 
     public function getStatus()
     {
-        return view('status');
+      $robots = Robot::all();
+      $data['robots'] = $robots;
+      return view('status', $data);
     }
 
     public function getInventory()
