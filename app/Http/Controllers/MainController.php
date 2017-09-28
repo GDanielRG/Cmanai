@@ -74,28 +74,6 @@ class MainController extends Controller
         $product->items()->save(new Item());
       }
 
-      $product->load('items');
-      return $product;
-
-      // $product = Product::where('barCode', $request->get('barCode'))->first();
-
-      // if(!$product){
-      //   $product = Product::create([
-      //     'name' => $request->get('name'),
-      //     'barCode' => $request->get('barCode')
-      //   );
-      // }
-
-      // $items = new Collection();
-
-      // for ($i=0; $i <$request->get('quantity') ; $i++) {
-      //   $items->push(new Item([
-      //     'rack_id' => $request->get('rack_id'),
-      //   ]))
-      // }
-
-      // $product->items()->saveMany($items);
-
       return view('/inventory');
 
     }
@@ -110,11 +88,6 @@ class MainController extends Controller
       $products = Product::all();
       $data['products'] = $products;
       return view('inventory', $data);
-    }
-
-    public function postDeleteRack(Rack $rack)
-    {
-
     }
 
     public function request()
@@ -136,10 +109,44 @@ class MainController extends Controller
     
     public function postRequest(Request $request)
     {
-      \Log::info($request->all());
       return response()->json([
         'name' => 'Abigail',
         'state' => 'CA'
       ]);
+    }
+
+    public function getProduct(Product $product)
+    {
+      $data['product'] = $product;
+      $data['racks'] = Rack::all();
+      return view('items', $data);
+    }
+
+    public function postItemChangeRack(Item $item, Request $request)
+    {
+      \Log::info('your momma');
+      $this->validate($request, [
+        'rack' => 'required',
+      ]);
+
+      if($request->get('rack') == 'none')
+      {
+        $item->rack()->dissociate();
+        $item->save();
+        return response()->json([
+          "message" => "Success",
+        ]);  
+      }
+        
+      $rack = Rack::findOrFail($request->get('rack'));
+
+      $item->rack()->associate($rack);
+      $item->save();
+
+      return response()->json([
+        "message" => "Success",
+      ]);  
+
+
     }
 }
