@@ -11,9 +11,14 @@
 |
 */
 
+Route::get('/test', 'MainController@request');
+Route::post('/test', 'MainController@postRequest');
 Route::get('/add-product', 'MainController@getAddProduct');
 Route::post('/add-product', 'MainController@postAddProduct');
 Route::get('/orders', 'MainController@getOrders');
 Route::get('/inventory', 'MainController@getInventory');
 Route::get('/add-rack', 'MainController@getAddRack');
 Route::post('/add-rack', 'MainController@postAddRack');
+Route::post('/racks/delete/{rack}', 'MainController@postDeleteRack');
+
+
