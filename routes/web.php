@@ -27,3 +27,4 @@ Route::post('/racks/delete/{rack}', 'MainController@postDeleteRack');
 Route::post('/inventory/{product}', 'MainController@postChangeRack');
 Route::get('/products/{product}', 'MainController@getProduct');
 Route::post('/items/{item}/change-rack', 'MainController@postItemChangeRack');
+Route::get('/status', 'MainController@getStatus');

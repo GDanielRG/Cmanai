@@ -90,6 +90,11 @@ class MainController extends Controller
         return view('orders');
     }
 
+    public function getStatus()
+    {
+        return view('status');
+    }
+
     public function getInventory()
     {
       $products = Product::all();
@@ -113,7 +118,7 @@ class MainController extends Controller
       // ]]);
       // dd(json_decode($result->getBody()));
     }
-    
+
     public function postRequest(Request $request)
     {
       return response()->json([
@@ -142,9 +147,9 @@ class MainController extends Controller
         $item->save();
         return response()->json([
           "message" => "Success",
-        ]);  
+        ]);
       }
-        
+
       $rack = Rack::findOrFail($request->get('rack'));
 
       $item->rack()->associate($rack);
@@ -152,7 +157,7 @@ class MainController extends Controller
 
       return response()->json([
         "message" => "Success",
-      ]);  
+      ]);
 
 
     }
