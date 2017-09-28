@@ -17,3 +17,6 @@ Route::get('/orders', 'MainController@getOrders');
 Route::get('/inventory', 'MainController@getInventory');
 Route::get('/add-rack', 'MainController@getAddRack');
 Route::post('/add-rack', 'MainController@postAddRack');
+Route::post('/racks/delete/{rack}', 'MainController@postDeleteRack');
+Route::post('/inventory/{product}', 'MainController@postChangeRack')
+Route::get('/inventory/{product}', 'MainController@getChangeRack')
