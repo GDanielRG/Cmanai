@@ -16,6 +16,7 @@
 <ul class="list-group " id="exampleInputIns1">
   @foreach($orders as $order)
   <li class="list-group-item">{{$order->type}}</li>
+  @endforeach
 </ul>
 <br>
 <div>

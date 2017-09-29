@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\Robot;
 use App\Models\Item;
 use App\Models\Order;
-use App\Models\Robot;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
