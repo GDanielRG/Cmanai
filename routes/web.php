@@ -29,3 +29,4 @@ Route::post('/inventory/{product}', 'MainController@postChangeRack');
 Route::get('/products/{product}', 'MainController@getProduct');
 Route::post('/items/{item}/change-rack', 'MainController@postItemChangeRack');
 Route::get('/items/{item}/get', 'MainController@getGetItem');
+Route::get('/status', 'MainController@getStatus');

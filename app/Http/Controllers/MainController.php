@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Robot;
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\Robot;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
@@ -125,6 +126,13 @@ class MainController extends Controller
     public function getOrders()
     {
         return view('orders');
+    }
+
+    public function getStatus()
+    {
+      $robots = Robot::all();
+      $data['robots'] = $robots;
+      return view('status', $data);
     }
 
     public function getInventory()
@@ -342,9 +350,9 @@ public function find_path($graph, $start, $end, $path=[])
         $item->save();
         return response()->json([
           "message" => "Success",
-        ]);  
+        ]);
       }
-        
+
       $rack = Rack::findOrFail($request->get('rack'));
 
       $item->rack()->associate($rack);
@@ -352,7 +360,7 @@ public function find_path($graph, $start, $end, $path=[])
 
       return response()->json([
         "message" => "Success",
-      ]);  
+      ]);
 
 
     }
