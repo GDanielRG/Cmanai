@@ -54,7 +54,7 @@ class MainController extends Controller
 
       return view('racks');
     }
-    
+
     public function getAddRobot()
     {
         $data['robots'] = Robot::all();
@@ -135,6 +135,13 @@ class MainController extends Controller
       return view('status', $data);
     }
 
+    public function postStatus(Order $order)
+    {
+      $order = Order::all();
+      $data['orders'] = $orders;
+      return view('status', $data);
+    }
+
     public function getInventory()
     {
       $products = Product::all();
@@ -153,13 +160,13 @@ class MainController extends Controller
       $carriedRacks = Rack::whereNotNull('robot_id')->get();
       $robotsCarrying = new Collection();
       foreach ($carriedRacks as $carriedRack) {
-        $data['robots_carrying'][] = [$carriedRack->robot->posX,$carriedRack->robot->posY];      
+        $data['robots_carrying'][] = [$carriedRack->robot->posX,$carriedRack->robot->posY];
       }
       $robots = Robot::all();
       foreach($robots as $robot)
       {
         if(empty($robot->rack))
-          $data['robots'][]=[$robot->posX,$robot->posY]; 
+          $data['robots'][]=[$robot->posX,$robot->posY];
       }
 
       $data['height'] = 7;
@@ -167,7 +174,7 @@ class MainController extends Controller
       $data['park_spots'] = [[5,0],[5,7]];
       $data['entry_points'] = [[0,3],[0,4]];
       $data['exit_points'] = [[6,1],[6,6]];
-      
+
 
       return response()->json($data);
       // return response()->json([
@@ -186,12 +193,12 @@ class MainController extends Controller
     {
       $busyRobots = Order::where('completed', false)->get()->pluck('robot_id')->toArray();
       $availableRobot = Robot::whereNotIn($busyRobots)->first();
-      // $path = 
+      // $path =
 
 
     }
 
-    
+
 public function find_path($graph, $start, $end, $path=[])
 {
     $path = array_merge($path,  [$start]);
@@ -301,7 +308,7 @@ public function find_path($graph, $start, $end, $path=[])
       "6,3" => ["5,3"]];
       return $this->find_path($graph, $a, $b);
     }
-    
+
 
     public function postNotify(Request $request)
     {
@@ -329,7 +336,7 @@ public function find_path($graph, $start, $end, $path=[])
       ]]);
       dd(json_decode($result->getBody()));
     }
-    
+
     public function getProduct(Product $product)
     {
       $data['product'] = $product;
