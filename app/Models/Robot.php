@@ -14,7 +14,7 @@ class Robot extends Model
      * @var array
      */
     protected $fillable = [
-        'posX', 'posY',
+        'posX', 'posY', 'name'
     ];
 
     public function rack()

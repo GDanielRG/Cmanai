@@ -20,10 +20,16 @@
                <a class="nav-link" href="/inventory"><i class="fa fa-archive"></i> Inventario</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="/add-product"><i class="fa fa-plus-circle"></i> Alta de Productos</a>
+                <a class="nav-link" href="/add-product"><i class="fa fa-plus-circle"></i> Alta de Productos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/orders"><i class="fa fa-pencil-square-o"></i> Pedidos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/status"><i class="fa fa-tasks" aria-hidden="true"></i> Estatus</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/racks"><i class="fa fa-align-justify" aria-hidden="true"></i> Racks</a>
               </li>
          </ul>
         </div>

@@ -15,6 +15,7 @@ class CreateRobotsTable extends Migration
     {
         Schema::create('robots', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
             $table->integer('posX');
             $table->integer('posY');
 
