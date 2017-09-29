@@ -195,13 +195,29 @@ class MainController extends Controller
       $pathToRack = $this->getRoute($availableRobot->posX . "," . $availableRobot->posY, $item->rack->posX . "," . $item->rack->posY);
       foreach($pathToRack as $node)
       {
-        $pathToRackString[] = str_replace(',', '', $node);
+          $pathToRackString[] = str_replace(',', '', $node);
       }
-
+      
       $pathToRackString = implode(' ',$pathToRackString);
+      $pathToRackString = substr($pathToRackString, 3);
+      // dd($pathToRackString);
+      $order = Order::create([
+          "robot_id" => $availableRobot->id,
+          "type" => 'm',
+          "payload" => json_encode([$pathToRackString]),
+        ]);
+      
+      $order2 = Order::create([
+        "order_id" => $order->id,
+        "robot_id" => $availableRobot->id,
+        "type" => 'r',
+        "payload" => json_encode("p"),
+      ]);
+
       
       $pathToExit1 = $this->getRoute($item->rack->posX . "," . $item->rack->posY, "6,1");
       $pathToExit2 = $this->getRoute($item->rack->posX . "," . $item->rack->posY, "6,6");
+      $temptr = sizeof($pathToExit1) < sizeof($pathToExit2)? "6,1" : "6,6";
       $pathToExit = sizeof($pathToExit1) < sizeof($pathToExit2)? $pathToExit1 : $pathToExit2;
       foreach($pathToExit as $node)
       {
@@ -209,9 +225,58 @@ class MainController extends Controller
       }
 
       $pathToExitString = implode(' ',$pathToExitString);
-    
-      $lastPos = substr($pathString, -2);
-      dd($pathString);
+      $pathToExitString = substr($pathToExitString, 3);      
+
+
+
+      $order3 = Order::create([
+        "order_id" => $order2->id,
+        "robot_id" => $availableRobot->id,
+        "type" => 'm',
+        "payload" => json_encode([$pathToExitString]),
+      ]);
+
+      $pathToRack2 = $this->getRoute($temptr, $item->rack->posX . "," . $item->rack->posY);
+      foreach($pathToRack2 as $node)
+      {
+        $pathToRack2String[] = str_replace(',', '', $node);
+      }
+
+      $pathToRack2String = implode(' ',$pathToRack2String);
+      $pathToRack2String = substr($pathToRack2String, 3);      
+
+      $order4 = Order::create([
+        "order_id" => $order3->id,
+        "robot_id" => $availableRobot->id,
+        "type" => 'm',
+        "payload" => json_encode([$pathToRack2String]),
+      ]);
+
+      $order5 = Order::create([
+        "order_id" => $order4->id,
+        "robot_id" => $availableRobot->id,
+        "type" => 'r',
+        "payload" => json_encode("d"),
+      ]);
+      $client = new Client(); //GuzzleHttp\Client
+      $result = $client->post('http://shielded-island-93691.herokuapp.com', [
+        'json' => [
+        'command' => "". $order->type ."",
+        'stateid' => "". $order->id. "",
+        'robotid' => "" . $order->robot_id. "",
+        'payload' => json_decode($order->payload)
+      ]]);
+
+      return redirect('/status');
+      // $client = new Client(); //GuzzleHttp\Client
+      // $result = $client->post('http://shielded-island-93691.herokuapp.com', [
+      //   'json' => [
+      //   'command' => "r",
+      //   'stateid' => "35",
+      //   'robotid' => "1",
+      //   'payload' => "d"
+      // ]]);
+      
     }
 
 
@@ -336,6 +401,49 @@ public function find_path($graph, $start, $end, $path=[])
           $robot->posX = $request->get('payload')[0];
           $robot->posY = $request->get('payload')[1];
           $robot->save();
+          break;
+        
+        case 't':
+          $robot = Robot::find($request->get('robotid'));        
+          $order = Order::find($request->get('stateid'));
+          $order->completed = true;
+          $order->save();
+          $ordernext = Order::find($order->order_id);
+          
+          
+          // $ordernext = Order::find($order->order_id);
+          if($ordernext)
+          {
+            if($ordernext->type=='r' && json_decode($ordernext->payload) == "p")
+            {
+              $rack = Rack::where('posX', $robot->posX)->where('posY', $robot->posY)->first();
+              $rack->robot()->associate($robot);
+              $rack->save();
+            }
+  
+            if($ordernext->type=='r' && json_decode($ordernext->payload) == "d")
+            {
+              $rack = $robot->rack;
+              $rack->robot->disassociate();
+              $rack->save();
+            }
+
+            if($ordernext->type == "m")
+            $payload = [json_decode($ordernext->payload)];
+            else
+            $payload = "".json_decode($ordernext->payload);
+
+            
+            
+            $client = new Client(); //GuzzleHttp\Client
+            $result = $client->post('http://shielded-island-93691.herokuapp.com', [
+              'json' => [
+              'command' => "". $ordernext->type ."",
+              'stateid' => "". $ordernext->id. "",
+              'robotid' => "" . $ordernext->robot_id . "",
+              'payload' => $payload,
+            ]]);
+          }
           break;
       }
     }
