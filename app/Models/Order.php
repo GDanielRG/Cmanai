@@ -13,7 +13,7 @@ class Order extends Model
      * @var array
      */
      protected $fillable = [
-        'robot_id', 'type', 'payload'
+        'robot_id', 'type', 'payload', 'completed', 'order_id'
     ];
 
     public function robot()

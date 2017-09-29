@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\Robot;
 use App\Models\Item;
 use App\Models\Order;
-use App\Models\Robot;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
@@ -185,10 +184,27 @@ class MainController extends Controller
     public function getGetItem(Item $item)
     {
       $busyRobots = Order::where('completed', false)->get()->pluck('robot_id')->toArray();
-      $availableRobot = Robot::whereNotIn($busyRobots)->first();
-      // $path = 
+      $availableRobot = Robot::whereNotIn('id', $busyRobots)->first();
+      $pathToRack = $this->getRoute($availableRobot->posX . "," . $availableRobot->posY, $item->rack->posX . "," . $item->rack->posY);
+      foreach($pathToRack as $node)
+      {
+        $pathToRackString[] = str_replace(',', '', $node);
+      }
 
+      $pathToRackString = implode(' ',$pathToRackString);
+      
+      $pathToExit1 = $this->getRoute($item->rack->posX . "," . $item->rack->posY, "6,1");
+      $pathToExit2 = $this->getRoute($item->rack->posX . "," . $item->rack->posY, "6,6");
+      $pathToExit = sizeof($pathToExit1) < sizeof($pathToExit2)? $pathToExit1 : $pathToExit2;
+      foreach($pathToExit as $node)
+      {
+        $pathToExitString[] = str_replace(',', '', $node);
+      }
 
+      $pathToExitString = implode(' ',$pathToExitString);
+    
+      $lastPos = substr($pathString, -2);
+      dd($pathString);
     }
 
     
